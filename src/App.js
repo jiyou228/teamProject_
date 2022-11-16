@@ -4,6 +4,7 @@ import './App.css';
 import Template from "./components/Template";
 import TodoList from "./components/TodoList";
 import TodoInsert from "./components/TodoInsert";
+import ProgressBar from "./components/ProgressBar";
 
 let nextId = 4;
 const App = () => {
@@ -63,8 +64,24 @@ const App = () => {
     setTodos(todos => todos.map(todo => todo.id === id ? {...todo, text} : todo))
   }
 
+  const today = new Date();
+
+  const dateString = today.toLocaleString('ko-KR', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+  });
+
+  const dayName = today.toLocaleString('ko-KR', { weekday: 'long' });
   return (
-  <Template todoLength={todos.length}>
+  <Template
+    dateString={dateString}
+    dayName={dayName}
+    todoLength={todos.length}
+    >
+    <div className="App">
+      <ProgressBar bgcolor={"#f67280"} nowStep={todos.filter((todos) => todos.checked === true).length} totalStep={todos.length} />
+    </div>
     <TodoList 
     todos={todos} 
     onCheckToggle={onCheckToggle} 
